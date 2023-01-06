@@ -1,4 +1,4 @@
-import { prodData } from '../globalTypes';
+import { prodData } from '../../globalTypes';
 
 export const productsData: prodData[] = [
     {

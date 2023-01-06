@@ -2,11 +2,13 @@ import React from 'react';
 import Filters from './Filters';
 import Goods from './Goods';
 
-const Main = () => {
+const Main = (props: any) => {
     return (
         <div className='main'>
             <Filters/>
-            <Goods/>
+            <Goods
+                products={props.products}
+            />
         </div>
     );
 };

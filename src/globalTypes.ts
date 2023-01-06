@@ -12,6 +12,10 @@ export interface prodData {
     images: string [];
 }
 
+export interface AppProps {
+    products: prodData;
+}
+
 // export type Callback<T> = (data?: T) => void;
 
 
