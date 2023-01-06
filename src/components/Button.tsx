@@ -4,6 +4,7 @@ const Button = (props: any) => {
 
     const btnHandler = () => {
       console.log('props.btnName = ', props.btnName);
+      console.log('props.id = ', props.productId);
     }
 
     return (
