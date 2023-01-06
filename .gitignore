@@ -104,3 +104,6 @@ dist
 .tern-port
 /build/
 /src/App.css
+/src/components/Page404.tsx
+/src/components/Cart.tsx
+/src/components/ProductDetails.tsx
