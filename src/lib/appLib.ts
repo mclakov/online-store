@@ -1,4 +1,4 @@
-import { prodData, viewParam } from '../globalTypes';
+import { prodData, viewParam, viewCategoryArr, viewBrandArr } from '../globalTypes';
 
 class AppLib {
     public products: prodData[];
@@ -6,8 +6,8 @@ class AppLib {
     public productsInCart: prodData[];
     public cartPriceTotal: number;
     public cartAmountTotal: number;
-    public categoryArr: string[];
-    public brandArr: string[];
+    public categoryArr: viewCategoryArr[];
+    public brandArr: viewBrandArr[];
     public priceArr: number[];
     public stockArr: number[];
     public minPrice: number;
@@ -67,14 +67,24 @@ class AppLib {
     }
 
     getCategoryProd() {
-        const categoryArr = this.products.map((prod: prodData) => prod.category);
-        this.categoryArr = [...new Set(categoryArr)];
+        const categoryArr = this.products.map((prod: prodData) => {
+            return prod.category;
+        });
+        const categoryArrUnique = [...new Set(categoryArr)];
+        this.categoryArr = categoryArrUnique.map((prod: string) => {
+            return { category: prod, view: true }
+        });
         return this.categoryArr;
     }
 
     getBrandProd() {
-        const brandArr = this.products.map((prod: prodData) => prod.brand);
-        this.brandArr = [...new Set(brandArr)];
+        const brandArr = this.products.map((prod: prodData) => {
+            return prod.brand;
+        });
+        const categoryArrUnique = [...new Set(brandArr)];
+        this.brandArr = categoryArrUnique.map((prod: string) => {
+            return { brand: prod, view: true }
+        });
         return this.brandArr;
     }
 
@@ -122,13 +132,19 @@ class AppLib {
         this.productsView = Object.assign([], productsFiltred);
     }
 
-    applyFilterCategory(categoryArr: string[]) {
-        const productsFiltred = this.productsView.filter(prod => categoryArr.includes(prod.category));
+    applyFilterCategory(categoryArr: viewCategoryArr[]) {
+        const productsFiltred = this.productsView.filter(prod => {
+            const index = categoryArr.findIndex(obj => obj.category === prod.category);
+            return categoryArr[index].view;
+            });
         this.productsView = Object.assign([], productsFiltred);
     }
 
-    applyFilterBrand(brandArr: string[]) {
-        const productsFiltred = this.productsView.filter(prod => brandArr.includes(prod.brand));
+    applyFilterBrand(brandArr: viewBrandArr[]) {
+        const productsFiltred = this.productsView.filter(prod => {
+            const index = brandArr.findIndex(obj => obj.brand === prod.brand);
+            return brandArr[index].view;
+        });
         this.productsView = Object.assign([], productsFiltred);
     }
 

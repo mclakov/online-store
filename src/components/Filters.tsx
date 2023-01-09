@@ -20,19 +20,37 @@ const Filters = (props: any) => {
     });
 
     const rangeHandlerPrice = (e: ChangeResult) => {
+        if (viewParam.minPrice === e.minValue && viewParam.maxPrice === e.maxValue) return;
         viewParam.minPrice = e.minValue;
         viewParam.maxPrice = e.maxValue;
         props.applyFilters(viewParam);
     };
 
     const rangeHandlerStock = (e: ChangeResult) => {
+        if (viewParam.minStock === e.minValue && viewParam.maxStock === e.maxValue) return;
         viewParam.minStock = e.minValue;
         viewParam.maxStock = e.maxValue;
         props.applyFilters(viewParam);
     };
 
+    const categoryFilterHandler = (prod: string) => {
+        viewParam.categoryArr.forEach(obj => {
+            if (prod === obj.category) obj.view = !obj.view;
+        });
+        setViewParam(Object.assign({}, viewParam));
+        props.applyFilters(viewParam);
+    };
+
+    const brandFilterHandler = (prod: string) => {
+        viewParam.brandArr.forEach(obj => {
+            if (prod === obj.brand) obj.view = !obj.view;
+        });
+        setViewParam(Object.assign({}, viewParam));
+        props.applyFilters(viewParam);
+    };
+
     const createCategoryFilter = () => {
-        return appLib.getCategoryProd().map((prod, index) => {
+        return viewParam.categoryArr.map((prod, index) => {
             return (
                 <div
                     key={index}
@@ -41,8 +59,12 @@ const Filters = (props: any) => {
                         <input
                             type='checkbox'
                             key={index}
+                            checked={prod.view}
+                            onChange={() => {
+                                categoryFilterHandler(prod.category);
+                            }}
                         />
-                        {prod}
+                        {prod.category}
                     </>
                 </div>
             );
@@ -50,7 +72,7 @@ const Filters = (props: any) => {
     };
 
     const createBrandFilter = () => {
-        return appLib.getBrandProd().map((prod, index) => {
+        return viewParam.brandArr.map((prod, index) => {
             return (
                 <div
                     key={index}
@@ -59,8 +81,12 @@ const Filters = (props: any) => {
                         <input
                             type='checkbox'
                             key={index}
+                            checked={prod.view}
+                            onChange={() => {
+                                brandFilterHandler(prod.brand);
+                            }}
                         />
-                        {prod}
+                        {prod.brand}
                     </>
                 </div>
             );
@@ -85,9 +111,7 @@ const Filters = (props: any) => {
                     step={50}
                     minValue={appLib.getMinPrice()}
                     maxValue={appLib.getMaxPrice()}
-                    onInput={
-                        rangeHandlerPrice
-                    }
+                    onInput={(e) => rangeHandlerPrice(e)}
                 />
             </div>
             <div className='filters-title'>Stock</div>
@@ -98,9 +122,7 @@ const Filters = (props: any) => {
                     step={5}
                     minValue={appLib.getMinStock()}
                     maxValue={appLib.getMaxStock()}
-                    onInput={
-                        rangeHandlerStock
-                    }
+                    onInput={(e) => rangeHandlerStock(e)}
                 />
             </div>
             <div className='filters-title'>Sort</div>

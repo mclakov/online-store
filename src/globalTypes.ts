@@ -12,13 +12,23 @@ export interface prodData {
     images: string [];
 }
 
+export interface  viewCategoryArr {
+    category: string;
+    view: boolean;
+}
+
+export interface  viewBrandArr {
+    brand: string;
+    view: boolean;
+}
+
 export interface viewParam {
     minPrice: number;
     maxPrice: number;
     minStock: number;
     maxStock: number;
-    categoryArr: string[];
-    brandArr: string[];
+    categoryArr: viewCategoryArr[];
+    brandArr: viewBrandArr[];
     sort: string;
 }
 
