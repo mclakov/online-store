@@ -12,12 +12,12 @@ export interface prodData {
     images: string [];
 }
 
-export interface  viewCategoryArr {
+export interface viewCategoryArr {
     category: string;
     view: boolean;
 }
 
-export interface  viewBrandArr {
+export interface viewBrandArr {
     brand: string;
     view: boolean;
 }
@@ -36,18 +36,71 @@ export interface AppProps {
     products: prodData;
 }
 
-// export type Callback<T> = (data?: T) => void;
 export type getPriceFun = () => number[];
+export type handlerFunction = (act: string, productId: number) => void;
+export type applyF = (viewParam: viewParam) => void;
+export type applyS = (searchParam: string) => void;
 
+export interface Iprops {
+    cartPriceTotal: number;
+    cartAmountTotal: number;
+    products: prodData[];
+    btnHandler: handlerFunction;
+    applyFilters: applyF;
+    applySearch: applyS;
+    prod: prodData;
+    act: string;
+    btnName: string;
+    productId: number;
+    class: string;
+    key: number;
+}
 
+export interface propsBtn {
+    btnHandler: handlerFunction;
+    act: string;
+    btnName: string;
+    productId: number;
+    class: string;
+}
 
-export type Callback = (data?: any) => void;
-// export type CallbackBTN = (data: prodData, act: string) => {id: string, act: string};
-export type CallbackBTN = (act: string) => void;
+export interface propsFilt {
+    applyFilters: applyF;
+    applySearch: applyS;
+    products: prodData[];
+}
 
+export interface propsGods {
+    btnHandler: handlerFunction;
+    products: prodData[];
+}
 
-type CallbackFunction = () => void;
+export interface propsProd {
+    key: number;
+    products: prodData[];
+    prod: prodData;
+    btnHandler: handlerFunction;
+}
 
-export interface CallbackSource {
-    data: string;
+export interface propsCart {
+    products: prodData[];
+    btnHandler: handlerFunction;
+}
+
+export interface propsMain {
+    applyFilters: applyF;
+    applySearch: applyS;
+    products: prodData[];
+    btnHandler: handlerFunction;
+}
+
+export interface propsPD {
+    prod: prodData;
+    products: prodData[];
+    btnHandler: handlerFunction;
+}
+
+export interface propsH {
+    cartPriceTotal: number;
+    cartAmountTotal: number;
 }

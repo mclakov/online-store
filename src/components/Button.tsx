@@ -1,6 +1,7 @@
 import React from 'react';
+import { propsBtn } from '../../src/globalTypes';
 
-const Button = (props: any) => {
+const Button = (props: propsBtn) => {
 
     return (
         <div className='button'>

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import MultiRangeSlider, { ChangeResult } from 'multi-range-slider-react';
-import { prodData, getPriceFun } from '../../src/globalTypes';
+import { prodData, getPriceFun, propsFilt } from '../../src/globalTypes';
 import { AppLib } from '../../src/lib/appLib';
 import { productsData } from '../../src/lib/data/products';
 
 const appLib = new AppLib(productsData);
 const products = appLib.getProductsData();
 
-const Filters = (props: any) => {
+const Filters = (props: propsFilt) => {
 
     const [viewParam, setViewParam] = useState({
         minPrice: appLib.getMinPrice(),
@@ -25,14 +25,14 @@ const Filters = (props: any) => {
         if (viewParam.minPrice === e.minValue && viewParam.maxPrice === e.maxValue) return;
         viewParam.minPrice = e.minValue;
         viewParam.maxPrice = e.maxValue;
-        props.applyFilters(viewParam);
+        // props.applyFilters(viewParam);
     };
 
     const rangeHandlerStock = (e: ChangeResult) => {
         if (viewParam.minStock === e.minValue && viewParam.maxStock === e.maxValue) return;
         viewParam.minStock = e.minValue;
         viewParam.maxStock = e.maxValue;
-        props.applyFilters(viewParam);
+        // props.applyFilters(viewParam);
     };
 
     const categoryFilterHandler = (prod: string) => {
@@ -40,7 +40,7 @@ const Filters = (props: any) => {
             if (prod === obj.category) obj.view = !obj.view;
         });
         setViewParam(Object.assign({}, viewParam));
-        props.applyFilters(viewParam);
+        // props.applyFilters(viewParam);
     };
 
     const brandFilterHandler = (prod: string) => {
@@ -48,7 +48,7 @@ const Filters = (props: any) => {
             if (prod === obj.brand) obj.view = !obj.view;
         });
         setViewParam(Object.assign({}, viewParam));
-        props.applyFilters(viewParam);
+        // props.applyFilters(viewParam);
     };
 
     const createCategoryFilter = () => {
@@ -138,7 +138,7 @@ const Filters = (props: any) => {
                             onChange={() => {
                                 viewParam.sort = 'price-ASC';
                                 setViewParam(Object.assign({}, viewParam));
-                                props.applyFilters(viewParam);
+                                // props.applyFilters(viewParam);
                             }}
                         />
                         ASC price
@@ -153,7 +153,7 @@ const Filters = (props: any) => {
                             onChange={() => {
                                 viewParam.sort = 'price-DESC';
                                 setViewParam(Object.assign({}, viewParam));
-                                props.applyFilters(viewParam);
+                                // props.applyFilters(viewParam);
                             }}
                         />
                         DESC price
@@ -168,7 +168,7 @@ const Filters = (props: any) => {
                             onChange={() => {
                                 viewParam.sort = 'rating-ASC';
                                 setViewParam(Object.assign({}, viewParam));
-                                props.applyFilters(viewParam);
+                                // props.applyFilters(viewParam);
                             }}
                         />
                         ASC rating
@@ -183,7 +183,7 @@ const Filters = (props: any) => {
                             onChange={() => {
                                 viewParam.sort = 'rating-DESC';
                                 setViewParam(Object.assign({}, viewParam));
-                                props.applyFilters(viewParam);
+                                // props.applyFilters(viewParam);
                             }}
                         />
                         DESC rating
@@ -198,7 +198,7 @@ const Filters = (props: any) => {
                             onChange={() => {
                                 viewParam.sort = 'discount-ASC';
                                 setViewParam(Object.assign({}, viewParam));
-                                props.applyFilters(viewParam);
+                                // props.applyFilters(viewParam);
                             }}
                         />
                         ASC discount
@@ -213,7 +213,7 @@ const Filters = (props: any) => {
                             onChange={() => {
                                 viewParam.sort = 'discount-DESC';
                                 setViewParam(Object.assign({}, viewParam));
-                                props.applyFilters(viewParam);
+                                // props.applyFilters(viewParam);
                             }}
                         />
                         DESC discount

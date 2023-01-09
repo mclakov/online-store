@@ -1,6 +1,7 @@
 import React from 'react';
+import { propsH } from '../../src/globalTypes';
 
-const Header = (props: any) => {
+const Header = (props: propsH) => {
     return (
         <div className='header'>
             {/*let newUrl = new URL(window.location.protocol + "//" + window.location.host + window.location.pathname)*/}

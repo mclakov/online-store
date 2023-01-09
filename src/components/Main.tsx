@@ -1,8 +1,9 @@
 import React from 'react';
 import Filters from './Filters';
 import Goods from './Goods';
+import { propsFilt, propsMain } from '../../src/globalTypes';
 
-const Main = (props: any) => {
+const Main = (props: propsMain) => {
     return (
         <div className='main'>
             <Filters

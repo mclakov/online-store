@@ -68,35 +68,41 @@ function App() {
         });
         queryParams.sort = params.sort || 'default';
         queryParams.searchParam = params.searchParam || 'default';
+        applyFilters(queryParams);
+        applySearch(queryParams.searchParam);
         setUrl();
     };
 
     const setUrl = () => {
-        const category = queryParams.categoryArr.map(obj => {
-            if (obj.view === true) {
-                return obj.category;
-            }
-        });
-        const brand = queryParams.brandArr.map(obj => {
-            if (obj.view === true) {
-                return obj.brand;
-            }
-        });
-        let newUrl = new URL(window.location.protocol + '//' + window.location.host + window.location.pathname);
-        newUrl.searchParams.append('cartPriceTotal', queryParams.cartPriceTotal.toString());
-        newUrl.searchParams.append('cartAmountTotal', queryParams.cartAmountTotal.toString());
-        newUrl.searchParams.append('minPrice', queryParams.minPrice.toString());
-        newUrl.searchParams.append('maxPrice', queryParams.maxPrice.toString());
-        newUrl.searchParams.append('minStock', queryParams.minStock.toString());
-        newUrl.searchParams.append('maxStock', queryParams.maxStock.toString());
-        newUrl.searchParams.append('category', category.join(','));
-        newUrl.searchParams.append('brand', brand.join(','));
-        newUrl.searchParams.append('sort', queryParams.sort);
-        newUrl.searchParams.append('searchParam', queryParams.searchParam);
-        window.history.pushState({ path: newUrl.href }, '', newUrl.href);
+        if (window.location.pathname !== '/store') {
+            let newUrl = new URL(window.location.protocol + '//' + window.location.host + window.location.pathname);
+            newUrl.searchParams.append('product', prodDetails.id.toString());
+            window.history.pushState({ path: newUrl.href }, '', newUrl.href);
+        } else {
+            const category = queryParams.categoryArr.map(obj => {
+                if (obj.view === true) {
+                    return obj.category;
+                }
+            });
+            const brand = queryParams.brandArr.map(obj => {
+                if (obj.view === true) {
+                    return obj.brand;
+                }
+            });
+            let newUrl = new URL(window.location.protocol + '//' + window.location.host + window.location.pathname);
+            newUrl.searchParams.append('cartPriceTotal', queryParams.cartPriceTotal.toString());
+            newUrl.searchParams.append('cartAmountTotal', queryParams.cartAmountTotal.toString());
+            newUrl.searchParams.append('minPrice', queryParams.minPrice.toString());
+            newUrl.searchParams.append('maxPrice', queryParams.maxPrice.toString());
+            newUrl.searchParams.append('minStock', queryParams.minStock.toString());
+            newUrl.searchParams.append('maxStock', queryParams.maxStock.toString());
+            newUrl.searchParams.append('category', category.join(','));
+            newUrl.searchParams.append('brand', brand.join(','));
+            newUrl.searchParams.append('sort', queryParams.sort);
+            newUrl.searchParams.append('searchParam', queryParams.searchParam);
+            window.history.pushState({ path: newUrl.href }, '', newUrl.href);
+        }
     };
-
-    // setUrl();
 
     const btnHandler = (act: string, productId: number) => {
         if (act === 'add') {
@@ -108,13 +114,18 @@ function App() {
             setUrl();
         }
         if (act === 'det') {
+            prodDetails.id = productId;
             setProdDetails(appLib.getProductDetails(productId));
-            // window.location.pathname = 'product-details';//
+            let newUrl = new URL(window.location.protocol + '//' + window.location.host + '/product-details/');
+            newUrl.searchParams.append('product', productId.toString());
+            window.history.pushState({ path: newUrl.href }, '', newUrl.href);
+            // window.location.pathname = `/product-details/${productId}`;//
         }
     };
 
     const applyFilters = (viewParam: viewParam) => {
         appLib.applyFilters(viewParam);
+        appLib.getViewProducts();
         setProducts(appLib.getViewProducts());
         queryParams.minPrice = viewParam.minPrice;
         queryParams.maxPrice = viewParam.maxPrice;
@@ -123,7 +134,6 @@ function App() {
         queryParams.categoryArr = viewParam.categoryArr;
         queryParams.brandArr = viewParam.brandArr;
         queryParams.sort = viewParam.sort;
-        setUrl();
     };
 
     const applySearch = (searchParam: string) => {
@@ -155,7 +165,8 @@ function App() {
                         btnHandler={btnHandler}
                     />}>
                     </Route>
-                    <Route path='/product-details' element={<ProductDetails
+                    <Route path='/product-details/*' element={<ProductDetails
+                        products={products}
                         prod={prodDetails}
                         btnHandler={btnHandler}
                     />}>
@@ -170,6 +181,5 @@ function App() {
         </div>
     );
 }
-
 
 export default App;

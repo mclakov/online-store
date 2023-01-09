@@ -1,13 +1,14 @@
 import React from 'react';
-import { AppProps, prodData } from '../globalTypes';
+import { AppProps, prodData, propsGods } from '../globalTypes';
 import Product from './Product';
 
-const Goods = (props: any) => {
+const Goods = (props: propsGods) => {
 
     const createGoods = () => {
       const goodsArr = props.products.map((prod: prodData, index: number) => {
           return (
               <Product
+                  products={props.products}
                   key={index}
                   prod={prod}
                   btnHandler={props.btnHandler}

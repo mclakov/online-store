@@ -1,8 +1,9 @@
 import React from 'react';
 import { prodData } from '../globalTypes';
 import Button from './Button';
+import { propsProd } from '../../src/globalTypes';
 
-const Product = (props: any) => {
+const Product = (props: propsProd) => {
     return (
         <div
             className='product-item'
