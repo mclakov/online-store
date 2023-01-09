@@ -148,11 +148,57 @@ class AppLib {
         this.productsView = Object.assign([], productsFiltred);
     }
 
+    // sortByField(field) {
+    //     return (a, b) => a[field] > b[field] ? 1 : -1;
+    // }
+
+    applySort(sort: string) {
+        const productsSorted = this.productsView;
+
+        if (sort === 'price-ASC') {
+            const productsSorted = this.productsView.sort((a, b) => {
+                return a.price > b.price ? 1 : -1;
+            });
+        }
+
+        if (sort === 'price-DESC') {
+            const productsSorted = this.productsView.sort((a, b) => {
+                return a.price < b.price ? 1 : -1;
+            });
+        }
+
+        if (sort === 'rating-ASC') {
+            const productsSorted = this.productsView.sort((a, b) => {
+                return a.rating > b.rating ? 1 : -1;
+            });
+        }
+
+        if (sort === 'rating-DESC') {
+            const productsSorted = this.productsView.sort((a, b) => {
+                return a.rating < b.rating ? 1 : -1;
+            });
+        }
+
+        if (sort === 'discount-ASC') {
+            const productsSorted = this.productsView.sort((a, b) => {
+                return a.discountPercentage > b.discountPercentage ? 1 : -1;
+            });
+        }
+
+        if (sort === 'discount-DESC') {
+            const productsSorted = this.productsView.sort((a, b) => {
+                return a.discountPercentage < b.discountPercentage ? 1 : -1;
+            });
+        }
+        this.productsView = Object.assign([], productsSorted);
+    }
+
     applyFilters(viewParam: viewParam) {
         this.applyFilterPrice(viewParam.minPrice, viewParam.maxPrice);
         this.applyFilterStock(viewParam.minStock, viewParam.maxStock);
         this.applyFilterCategory(viewParam.categoryArr);
         this.applyFilterBrand(viewParam.brandArr);
+        this.applySort(viewParam.sort);
     }
 }
 
