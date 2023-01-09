@@ -16,7 +16,7 @@ const Filters = (props: any) => {
         maxStock: appLib.getMaxStock(),
         categoryArr: appLib.getCategoryProd(),
         brandArr: appLib.getBrandProd(),
-        sort: '',
+        sort: 'default',
     });
 
     const [searchParam, setSearchParam] = useState('');

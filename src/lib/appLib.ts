@@ -150,41 +150,38 @@ class AppLib {
 
     applySort(sort: string) {
         const productsSorted = this.productsView;
-
         if (sort === 'price-ASC') {
             const productsSorted = this.productsView.sort((a, b) => {
                 return a.price > b.price ? 1 : -1;
             });
         }
-
         if (sort === 'price-DESC') {
             const productsSorted = this.productsView.sort((a, b) => {
                 return a.price < b.price ? 1 : -1;
             });
         }
-
         if (sort === 'rating-ASC') {
             const productsSorted = this.productsView.sort((a, b) => {
                 return a.rating > b.rating ? 1 : -1;
             });
         }
-
         if (sort === 'rating-DESC') {
             const productsSorted = this.productsView.sort((a, b) => {
                 return a.rating < b.rating ? 1 : -1;
             });
         }
-
         if (sort === 'discount-ASC') {
             const productsSorted = this.productsView.sort((a, b) => {
                 return a.discountPercentage > b.discountPercentage ? 1 : -1;
             });
         }
-
         if (sort === 'discount-DESC') {
             const productsSorted = this.productsView.sort((a, b) => {
                 return a.discountPercentage < b.discountPercentage ? 1 : -1;
             });
+        }
+        if (sort === 'default') {
+            const productsSorted = this.productsView;
         }
         this.productsView = Object.assign([], productsSorted);
     }
@@ -198,19 +195,24 @@ class AppLib {
     }
 
     applySearch(searchParam: string) {
+        let productsFiltred = this.products;
+        if (searchParam === 'default') {
+            productsFiltred = this.products;
+        } else {
+            productsFiltred = this.products.filter(prod => {
+                if (prod.title.toLowerCase().includes(searchParam) ||
+                    prod.price.toString().includes(searchParam) ||
+                    prod.discountPercentage.toString().includes(searchParam) ||
+                    prod.rating.toString().includes(searchParam) ||
+                    prod.stock.toString().includes(searchParam) ||
+                    prod.brand.toLowerCase().includes(searchParam) ||
+                    prod.category.toLowerCase().includes(searchParam)) {
+                    console.log('searchParam = ', searchParam);
+                    return true;
+                } return false;
+            });
+        }
 
-        const productsFiltred = this.products.filter(prod => {
-            if (prod.title.toLowerCase().includes(searchParam) ||
-                prod.price.toString().includes(searchParam) ||
-                prod.discountPercentage.toString().includes(searchParam) ||
-                prod.rating.toString().includes(searchParam) ||
-                prod.stock.toString().includes(searchParam) ||
-                prod.brand.toLowerCase().includes(searchParam) ||
-                prod.category.toLowerCase().includes(searchParam)) {
-                console.log('searchParam = ', searchParam);
-                return true;
-            } return false;
-        });
         this.productsView = Object.assign([], productsFiltred);
     }
 }
