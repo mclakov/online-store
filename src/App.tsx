@@ -36,8 +36,14 @@ function App() {
     };
 
     const applyFilters = (viewParam: viewParam) => {
-        console.log('applyFilters', viewParam);
+        console.log('applyFilters = ', viewParam);
         appLib.applyFilters(viewParam);
+        setProducts(appLib.getViewProducts());
+    };
+
+    const applySearch = (searchParam: string) => {
+        console.log('applySearch = ', searchParam);
+        appLib.applySearch(searchParam);
         setProducts(appLib.getViewProducts());
     };
 
@@ -53,6 +59,7 @@ function App() {
                         products={products}
                         btnHandler={btnHandler}
                         applyFilters={applyFilters}
+                        applySearch={applySearch}
                     />}>
                     </Route>
                     <Route path='/' element={<Navigate replace to='/store' />}>

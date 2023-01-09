@@ -19,6 +19,8 @@ const Filters = (props: any) => {
         sort: '',
     });
 
+    const [searchParam, setSearchParam] = useState('');
+
     const rangeHandlerPrice = (e: ChangeResult) => {
         if (viewParam.minPrice === e.minValue && viewParam.maxPrice === e.maxValue) return;
         viewParam.minPrice = e.minValue;
@@ -219,7 +221,14 @@ const Filters = (props: any) => {
                 </div>
             </form>
             <div className='filters-title'>Search</div>
-            <input type='text' />
+            <input
+                type='text'
+                onChange={(e) => {
+                    setSearchParam(e.target.value.toLowerCase());
+                    props.applySearch(e.target.value.toLowerCase());
+                }}
+                value={searchParam}
+            />
         </div>
     );
 };

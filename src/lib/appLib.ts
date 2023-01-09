@@ -148,10 +148,6 @@ class AppLib {
         this.productsView = Object.assign([], productsFiltred);
     }
 
-    // sortByField(field) {
-    //     return (a, b) => a[field] > b[field] ? 1 : -1;
-    // }
-
     applySort(sort: string) {
         const productsSorted = this.productsView;
 
@@ -199,6 +195,23 @@ class AppLib {
         this.applyFilterCategory(viewParam.categoryArr);
         this.applyFilterBrand(viewParam.brandArr);
         this.applySort(viewParam.sort);
+    }
+
+    applySearch(searchParam: string) {
+
+        const productsFiltred = this.products.filter(prod => {
+            if (prod.title.toLowerCase().includes(searchParam) ||
+                prod.price.toString().includes(searchParam) ||
+                prod.discountPercentage.toString().includes(searchParam) ||
+                prod.rating.toString().includes(searchParam) ||
+                prod.stock.toString().includes(searchParam) ||
+                prod.brand.toLowerCase().includes(searchParam) ||
+                prod.category.toLowerCase().includes(searchParam)) {
+                console.log('searchParam = ', searchParam);
+                return true;
+            } return false;
+        });
+        this.productsView = Object.assign([], productsFiltred);
     }
 }
 

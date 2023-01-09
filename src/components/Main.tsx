@@ -8,6 +8,7 @@ const Main = (props: any) => {
             <Filters
                 products={props.products}
                 applyFilters={props.applyFilters}
+                applySearch={props.applySearch}
             />
             <Goods
                 products={props.products}
