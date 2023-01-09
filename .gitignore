@@ -103,10 +103,3 @@ dist
 # TernJS port file
 .tern-port
 /build/
-/src/App.css
-/src/components/Page404.tsx
-/src/components/Cart.tsx
-/src/components/ProductDetails.tsx
-/src/assets/styles/ProductDetails.scss
-/src/assets/styles/Header.scss
-/src/assets/styles/Filters.scss
