@@ -109,3 +109,4 @@ dist
 /src/components/ProductDetails.tsx
 /src/assets/styles/ProductDetails.scss
 /src/assets/styles/Header.scss
+/src/assets/styles/Filters.scss

@@ -39,13 +39,17 @@ const Product = (props: any) => {
             <div className='item-buttons'>
                 <Button
                     btnName={'ADD TO CART'}
+                    act={'add'}
                     class={'button-add'}
                     productId={props.prod.id}
+                    btnHandler={props.btnHandler}
                 />
                 <Button
                     btnName={'DETAILS'}
+                    act={'det'}
                     class={'button-det'}
                     productId={props.prod.id}
+                    btnHandler={props.btnHandler}
                 />
             </div>
         </div>

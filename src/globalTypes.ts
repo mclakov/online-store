@@ -12,11 +12,22 @@ export interface prodData {
     images: string [];
 }
 
+export interface viewParam {
+    minPrice: number;
+    maxPrice: number;
+    minStock: number;
+    maxStock: number;
+    categoryArr: string[];
+    brandArr: string[];
+    sort: string;
+}
+
 export interface AppProps {
     products: prodData;
 }
 
 // export type Callback<T> = (data?: T) => void;
+export type getPriceFun = () => number[];
 
 
 

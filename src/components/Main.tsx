@@ -5,9 +5,13 @@ import Goods from './Goods';
 const Main = (props: any) => {
     return (
         <div className='main'>
-            <Filters/>
+            <Filters
+                products={props.products}
+                applyFilters={props.applyFilters}
+            />
             <Goods
                 products={props.products}
+                btnHandler={props.btnHandler}
             />
         </div>
     );

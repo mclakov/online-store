@@ -10,6 +10,7 @@ const Goods = (props: any) => {
               <Product
                   key={index}
                   prod={prod}
+                  btnHandler={props.btnHandler}
               />
           )
       })
