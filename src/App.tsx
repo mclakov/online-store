@@ -1,33 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useSearchParams } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header';
 import Main from './components/Main';
 import Footer from './components/Footer';
 import { AppLib } from './lib/appLib';
 import { productsData } from './lib/data/products';
-import { prodData, viewParam } from './globalTypes';
+import { viewParam } from './globalTypes';
 import Page404 from './components/Page404';
 import Cart from './components/Cart';
 import ProductDetails from './components/ProductDetails';
-import { ChangeResult } from 'multi-range-slider-react';
-import * as url from 'url';
 
 const appLib = new AppLib(productsData);
 
 function App() {
-
-    const [queryParams, setQueryParams] = useState({
+    // @ts-ignore
+    let [searchParams, setSearchParams] = useSearchParams({
         cartPriceTotal: 0,
         cartAmountTotal: 0,
         minPrice: appLib.getMinPrice(),
         maxPrice: appLib.getMaxPrice(),
         minStock: appLib.getMinStock(),
         maxStock: appLib.getMaxStock(),
-        categoryArr: appLib.getCategoryProd(),
-        brandArr: appLib.getBrandProd(),
+        categoryArr: appLib.getCategoryProd().map(obj => {
+            if (obj.view === true) {
+                return obj.category;
+            }
+        }).join(','),
+        brandArr: appLib.getBrandProd().map(obj => {
+            if (obj.view === true) {
+                return obj.brand;
+            }
+        }).join(','),
         sort: 'default',
         searchParam: 'default',
+    });
+    const [queryParams, setQueryParams] = useState({
+        cartPriceTotal: Number(searchParams.get('cartPriceTotal')) || 0,
+        cartAmountTotal: Number(searchParams.get('cartAmountTotal')) || 0,
+        minPrice: Number(searchParams.get('minPrice')) || appLib.getMinPrice(),
+        maxPrice: Number(searchParams.get('maxPrice')) || appLib.getMaxPrice(),
+        minStock: Number(searchParams.get('minStock')) || appLib.getMinStock(),
+        maxStock: Number(searchParams.get('maxStock')) || appLib.getMaxStock(),
+        categoryArr: searchParams.get('categoryArr') || appLib.getCategoryProd().map(obj => {
+            if (obj.view === true) {
+                return obj.category;
+            }
+        }).join(','),
+        brandArr: searchParams.get('brandArr') || appLib.getBrandProd().map(obj => {
+            if (obj.view === true) {
+                return obj.brand;
+            }
+        }).join(','),
+        sort: searchParams.get('sort') || 'default',
+        searchParam: searchParams.get('searchParam') || 'default',
     });
 
     const [products, setProducts] = useState(appLib.getProductsData());
@@ -37,110 +63,40 @@ function App() {
     const [cartAmountTotal, setCartAmountTotal] = useState(appLib.getCartAmountTotal());
 
     useEffect(() => {
-        getQueryFromUrl();
+        // @ts-ignore
+        setSearchParams(queryParams);
+
+        // applyFilters(
+        //     {
+        //         cartPriceTotal: queryParams.cartPriceTotal,
+        //         cartAmountTotal: queryParams.cartAmountTotal,
+        //         minPrice: queryParams.minPrice,
+        //         maxPrice: queryParams.maxPrice,
+        //         minStock: queryParams.minStock,
+        //         maxStock: queryParams.maxStock,
+        //         categoryArr: queryParams.categoryArr,
+        //         brandArr: queryParams.brandArr,
+        //         sort: queryParams.sort,
+        //     });
+        // applySearch(queryParams);
     }, []);
 
-    const getQueryFromUrl = () => {
-        const urlSearchParams = new URLSearchParams(window.location.search);
-        const params = Object.fromEntries(urlSearchParams.entries());
-        // const queryFromUrl = new URL(location.href).searchParams;
-        const category = params.bandArr || appLib.getCategoryProd().map(obj => obj.category).join(',');
-        const catArr = category.split(',');
-        const brand = params.bandArr || appLib.getBrandProd().map(obj => obj.brand).join(',');
-        const brArr = brand.split(',');
-        queryParams.cartPriceTotal = Number(params.cartPriceTotal) || 0;
-        queryParams.cartAmountTotal = Number(params.cartAmountTotal) || 0;
-        queryParams.minPrice = Number(params.minPrice) || appLib.getMinPrice();
-        queryParams.maxPrice = Number(params.maxPrice) || appLib.getMaxPrice();
-        queryParams.minStock = Number(params.minStock) || appLib.getMinStock();
-        queryParams.maxStock = Number(params.maxStock) || appLib.getMaxStock();
-        queryParams.categoryArr = appLib.getCategoryProd().map(obj => {
-            if (catArr.includes(obj.category)) {
-                return { category: obj.category, view: true };
-            }
-            return { category: obj.category, view: false };
-        });
-        queryParams.brandArr = appLib.getBrandProd().map(obj => {
-            if (brArr.includes(obj.brand)) {
-                return { brand: obj.brand, view: true };
-            }
-            return { brand: obj.brand, view: false };
-        });
-        queryParams.sort = params.sort || 'default';
-        queryParams.searchParam = params.searchParam || 'default';
-        applyFilters(queryParams);
-        applySearch(queryParams.searchParam);
-        setUrl();
-    };
-
-    const setUrl = () => {
-        if (window.location.pathname !== '/store') {
-            let newUrl = new URL(window.location.protocol + '//' + window.location.host + window.location.pathname);
-            newUrl.searchParams.append('product', prodDetails.id.toString());
-            window.history.pushState({ path: newUrl.href }, '', newUrl.href);
-        } else {
-            const category = queryParams.categoryArr.map(obj => {
-                if (obj.view === true) {
-                    return obj.category;
-                }
-            });
-            const brand = queryParams.brandArr.map(obj => {
-                if (obj.view === true) {
-                    return obj.brand;
-                }
-            });
-            let newUrl = new URL(window.location.protocol + '//' + window.location.host + window.location.pathname);
-            newUrl.searchParams.append('cartPriceTotal', queryParams.cartPriceTotal.toString());
-            newUrl.searchParams.append('cartAmountTotal', queryParams.cartAmountTotal.toString());
-            newUrl.searchParams.append('minPrice', queryParams.minPrice.toString());
-            newUrl.searchParams.append('maxPrice', queryParams.maxPrice.toString());
-            newUrl.searchParams.append('minStock', queryParams.minStock.toString());
-            newUrl.searchParams.append('maxStock', queryParams.maxStock.toString());
-            newUrl.searchParams.append('category', category.join(','));
-            newUrl.searchParams.append('brand', brand.join(','));
-            newUrl.searchParams.append('sort', queryParams.sort);
-            newUrl.searchParams.append('searchParam', queryParams.searchParam);
-            window.history.pushState({ path: newUrl.href }, '', newUrl.href);
-        }
-    };
 
     const btnHandler = (act: string, productId: number) => {
-        if (act === 'add') {
-            setProdsInCart(appLib.addToCart(productId));
-            setCartAmountTotal(appLib.getCartAmountTotal());
-            queryParams.cartAmountTotal = appLib.getCartAmountTotal();
-            setCartPriceTotal(appLib.getCartPriceTotal());
-            queryParams.cartPriceTotal = appLib.getCartPriceTotal();
-            setUrl();
-        }
-        if (act === 'det') {
-            prodDetails.id = productId;
-            setProdDetails(appLib.getProductDetails(productId));
-            let newUrl = new URL(window.location.protocol + '//' + window.location.host + '/product-details/');
-            newUrl.searchParams.append('product', productId.toString());
-            window.history.pushState({ path: newUrl.href }, '', newUrl.href);
-            // window.location.pathname = `/product-details/${productId}`;//
-        }
+        setProdsInCart(appLib.addToCart(productId));
+        setCartAmountTotal(appLib.getCartAmountTotal());
+        setCartPriceTotal(appLib.getCartPriceTotal());
     };
 
     const applyFilters = (viewParam: viewParam) => {
         appLib.applyFilters(viewParam);
         appLib.getViewProducts();
         setProducts(appLib.getViewProducts());
-        queryParams.minPrice = viewParam.minPrice;
-        queryParams.maxPrice = viewParam.maxPrice;
-        queryParams.minStock = viewParam.minStock;
-        queryParams.maxStock = viewParam.maxStock;
-        queryParams.categoryArr = viewParam.categoryArr;
-        queryParams.brandArr = viewParam.brandArr;
-        queryParams.sort = viewParam.sort;
     };
 
     const applySearch = (searchParam: string) => {
         appLib.applySearch(searchParam);
         setProducts(appLib.getViewProducts());
-        queryParams.searchParam = searchParam;
-        setUrl();
     };
 
     return (
@@ -149,37 +105,38 @@ function App() {
                 cartPriceTotal={cartPriceTotal}
                 cartAmountTotal={cartAmountTotal}
             />
-            <Router>
-                <Routes>
-                    <Route path='/store' element={<Main
-                        products={products}
-                        btnHandler={btnHandler}
-                        applyFilters={applyFilters}
-                        applySearch={applySearch}
-                    />}>
-                    </Route>
-                    <Route path='/' element={<Navigate replace to='/store' />}>
-                    </Route>
-                    <Route path='/cart' element={<Cart
-                        products={products}
-                        btnHandler={btnHandler}
-                    />}>
-                    </Route>
-                    <Route path='/product-details/*' element={<ProductDetails
-                        products={products}
-                        prod={prodDetails}
-                        btnHandler={btnHandler}
-                    />}>
-                    </Route>
-                    <Route path='/404' element={<Page404 />}>
-                    </Route>
-                    <Route path='*' element={<Navigate replace to='/404' />}>
-                    </Route>
-                </Routes>
-            </Router>
+            <Routes>
+                {/*<Route path={`/store/:cartPriceTotal/:cartAmountTotal/`} element={<Main*/}
+                <Route path={`/store`} element={<Main
+                    products={products}
+                    btnHandler={btnHandler}
+                    applyFilters={applyFilters}
+                    applySearch={applySearch}
+                    queryParams={queryParams}
+                />}>
+                </Route>
+                <Route path='/' element={<Navigate replace to='/store' />}>
+                </Route>
+                <Route path='/cart' element={<Cart
+                    products={products}
+                    btnHandler={btnHandler}
+                />}>
+                </Route>
+                <Route path={'/product-details/:id'} element={<ProductDetails
+                    products={products}
+                    prod={prodDetails}
+                    btnHandler={btnHandler}
+                />}>
+                </Route>
+                <Route path='/404' element={<Page404 />}>
+                </Route>
+                <Route path='*' element={<Navigate replace to='/404' />}>
+                </Route>
+            </Routes>
             <Footer />
         </div>
     );
 }
-
+// http://localhost:3000/store?cartPriceTotal=0&cartAmountTotal=0&minPrice=12&maxPrice=1749&minStock=4&maxStock=140&categoryArr=smartphones%2Claptops%2Cfragrances%2Cskincare&brandArr=Apple%2CSamsung%2COPPO%2CHuawei%2CMicrosoft+Surface%2CInfinix%2CHP+Pavilion%2CImpression+of+Acqua+Di+Gio%2CRoyal_Mirage%2CFog+Scent+Xpressio%2CAl+Munakh%2CLord+-+Al-Rehab%2CL%27Oreal+Paris%27%2CHemani+Tea%2CDermive%2CROREC+White+Rice%2CFair+%26+Clear&sort=default&searchParam=default
+// /store/:cartPriceTotal/:cartAmountTotal/:minPrice/:maxPrice/:minStock/:maxStock/:category/:brand/:sort/:searchParam
 export default App;

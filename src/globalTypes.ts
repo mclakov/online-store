@@ -12,6 +12,19 @@ export interface prodData {
     images: string [];
 }
 
+export interface propsSP {
+    cartPriceTotal: number;
+    cartAmountTotal: number;
+    minPrice: number;
+    maxPrice: number;
+    minStock: number;
+    maxStock: number;
+    categoryArr: string;
+    brandArr: string;
+    sort: string;
+    searchParam: string;
+}
+
 export interface viewCategoryArr {
     category: string;
     view: boolean;
@@ -68,6 +81,7 @@ export interface propsFilt {
     applyFilters: applyF;
     applySearch: applyS;
     products: prodData[];
+    queryParams: propsSP;
 }
 
 export interface propsGods {
@@ -92,6 +106,7 @@ export interface propsMain {
     applySearch: applyS;
     products: prodData[];
     btnHandler: handlerFunction;
+    queryParams: propsSP;
 }
 
 export interface propsPD {

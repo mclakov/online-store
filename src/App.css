@@ -189,11 +189,12 @@ body {
     margin-bottom: 5px;
 }
 
-.button button {
+.button button, .link {
     color: white;
     background: rgba(0, 0, 0, 0.7);
     border-radius: 10px;
     border: 2px solid darkred;
+    text-decoration: none;
 }
 
 .footer {

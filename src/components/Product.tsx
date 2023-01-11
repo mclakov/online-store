@@ -2,6 +2,7 @@ import React from 'react';
 import { prodData } from '../globalTypes';
 import Button from './Button';
 import { propsProd } from '../../src/globalTypes';
+import { Link } from 'react-router-dom';
 
 const Product = (props: propsProd) => {
     return (
@@ -45,13 +46,7 @@ const Product = (props: propsProd) => {
                     productId={props.prod.id}
                     btnHandler={props.btnHandler}
                 />
-                <Button
-                    btnName={'DETAILS'}
-                    act={'det'}
-                    class={'button-det'}
-                    productId={props.prod.id}
-                    btnHandler={props.btnHandler}
-                />
+                <Link className='link' to={`/product-details/${props.prod.id}`}>DETAILS</Link>
             </div>
         </div>
     );
