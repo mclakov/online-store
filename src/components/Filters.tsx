@@ -8,19 +8,8 @@ const appLib = new AppLib(productsData);
 
 const Filters = (props: propsFilt) => {
 
-    // const [viewParam, setViewParam] = useState({
-    //     minPrice: appLib.getMinPrice(),
-    //     maxPrice: appLib.getMaxPrice(),
-    //     minStock: appLib.getMinStock(),
-    //     maxStock: appLib.getMaxStock(),
-    //     categoryArr: appLib.getCategoryProd(),
-    //     brandArr: appLib.getBrandProd(),
-    //     sort: 'default',
-    // });
-
     const catArr = props.queryParams.categoryArr.split(',');
     const brArr = props.queryParams.brandArr.split(',');
-
 
     const [viewParam, setViewParam] = useState({
         minPrice: props.queryParams.minPrice,
@@ -43,8 +32,6 @@ const Filters = (props: propsFilt) => {
     });
 
     const [searchParam, setSearchParam] = useState(props.queryParams.searchParam === 'default' ? '' : props.queryParams.searchParam);
-
-    // console.log('searchParams(F) = ', searchParams);
 
     const rangeHandlerPrice = (e: ChangeResult) => {
         if (viewParam.minPrice === e.minValue && viewParam.maxPrice === e.maxValue) return;
@@ -256,8 +243,20 @@ const Filters = (props: propsFilt) => {
             />
             <br />
             <button
-
-            >RESET FILTERS
+                onClick={() => {
+                    props.resetFilters();
+                    setSearchParam('');
+                    setViewParam({
+                        minPrice: appLib.getMinPrice(),
+                        maxPrice: appLib.getMaxPrice(),
+                        minStock: appLib.getMinStock(),
+                        maxStock: appLib.getMaxStock(),
+                        categoryArr: appLib.getCategoryProd(),
+                        brandArr:appLib.getBrandProd(),
+                        sort: 'default',
+                    });
+                }}
+            >RESET
             </button>
         </div>
     );

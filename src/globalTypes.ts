@@ -50,6 +50,7 @@ export interface AppProps {
 }
 
 export type getPriceFun = () => number[];
+export type resetFilters = () => void;
 export type handlerFunction = (act: string, productId: number) => void;
 export type applyF = (viewParam: viewParam) => void;
 export type applyS = (searchParam: string) => void;
@@ -82,6 +83,7 @@ export interface propsFilt {
     applySearch: applyS;
     products: prodData[];
     queryParams: propsSP;
+    resetFilters: resetFilters;
 }
 
 export interface propsGods {
@@ -107,6 +109,7 @@ export interface propsMain {
     products: prodData[];
     btnHandler: handlerFunction;
     queryParams: propsSP;
+    resetFilters: resetFilters;
 }
 
 export interface propsPD {

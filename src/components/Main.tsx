@@ -12,6 +12,7 @@ const Main = (props: propsMain) => {
                 applyFilters={props.applyFilters}
                 applySearch={props.applySearch}
                 queryParams={props.queryParams}
+                resetFilters={props.resetFilters}
             />
             <Goods
                 products={props.products}

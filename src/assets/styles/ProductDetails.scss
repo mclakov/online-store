@@ -1,8 +1,11 @@
-.product-details {
+.product-details,
+.cart {
   width: 1200px;
   height: 83vh;
   background: rgba(0, 0, 0, 0.7);
   font-size: 2rem;
+  outline: 1px solid darkred;
+  border-radius: 10px;
 
   .product-item {
     width: 100%;
@@ -84,6 +87,7 @@
 
 @media screen and (max-width: 1400px) {
   .product-details,
+  .cart,
   .link-navigation {
     width: 1000px;
   }
@@ -97,6 +101,7 @@
 
 @media screen and (max-width: 1040px) {
   .product-details,
+  .cart,
   .link-navigation {
     width: 800px;
   }
@@ -131,6 +136,7 @@
 
 @media screen and (max-width: 840px) {
   .product-details,
+  .cart,
   .link-navigation {
     width: 500px;
   }
@@ -165,6 +171,7 @@
 
 @media screen and (max-width: 540px) {
   .product-details,
+  .cart,
   .link-navigation {
     width: 320px;
   }

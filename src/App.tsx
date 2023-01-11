@@ -65,20 +65,29 @@ function App() {
     useEffect(() => {
         // @ts-ignore
         setSearchParams(queryParams);
-
-        // applyFilters(
-        //     {
-        //         cartPriceTotal: queryParams.cartPriceTotal,
-        //         cartAmountTotal: queryParams.cartAmountTotal,
-        //         minPrice: queryParams.minPrice,
-        //         maxPrice: queryParams.maxPrice,
-        //         minStock: queryParams.minStock,
-        //         maxStock: queryParams.maxStock,
-        //         categoryArr: queryParams.categoryArr,
-        //         brandArr: queryParams.brandArr,
-        //         sort: queryParams.sort,
-        //     });
-        // applySearch(queryParams);
+        const catArr = queryParams.categoryArr.split(',');
+        const brArr = queryParams.brandArr.split(',');
+        applyFilters(
+            {
+                minPrice: Number(queryParams.minPrice),
+                maxPrice: Number(queryParams.maxPrice),
+                minStock: Number(queryParams.minStock),
+                maxStock: Number(queryParams.maxStock),
+                categoryArr: appLib.getCategoryProd().map(obj => {
+                    if (catArr.includes(obj.category)) {
+                        return { category: obj.category, view: true };
+                    }
+                    return { category: obj.category, view: false };
+                }),
+                brandArr: appLib.getBrandProd().map(obj => {
+                    if (brArr.includes(obj.brand)) {
+                        return { brand: obj.brand, view: true };
+                    }
+                    return { brand: obj.brand, view: false };
+                }),
+                sort: queryParams.sort,
+            });
+        applySearch(queryParams.searchParam);
     }, []);
 
 
@@ -89,14 +98,51 @@ function App() {
     };
 
     const applyFilters = (viewParam: viewParam) => {
+        queryParams.minPrice = viewParam.minPrice;
+        queryParams.maxPrice = viewParam.maxPrice;
+        queryParams.minStock = viewParam.minStock;
+        queryParams.maxStock = viewParam.maxStock;
+        queryParams.categoryArr = viewParam.categoryArr.map(obj => {
+            if (obj.view === true) {
+                return obj.category;
+            }
+        }).join(',');
+        queryParams.brandArr = viewParam.brandArr.map(obj => {
+            if (obj.view === true) {
+                return obj.brand;
+            }
+        }).join(','),
+            queryParams.sort = viewParam.sort;
+
+        // @ts-ignore
+        setSearchParams(queryParams);
+
+
         appLib.applyFilters(viewParam);
         appLib.getViewProducts();
         setProducts(appLib.getViewProducts());
     };
 
     const applySearch = (searchParam: string) => {
+        queryParams.searchParam = searchParam;
+        // @ts-ignore
+        setSearchParams(queryParams);
         appLib.applySearch(searchParam);
         setProducts(appLib.getViewProducts());
+    };
+
+    const resetFilters = () => {
+        applyFilters(
+            {
+                minPrice: appLib.getMinPrice(),
+                maxPrice: appLib.getMaxPrice(),
+                minStock: appLib.getMinStock(),
+                maxStock: appLib.getMaxStock(),
+                categoryArr: appLib.getCategoryProd(),
+                brandArr: appLib.getBrandProd(),
+                sort: 'default',
+            });
+        applySearch('default');
     };
 
     return (
@@ -113,6 +159,7 @@ function App() {
                     applyFilters={applyFilters}
                     applySearch={applySearch}
                     queryParams={queryParams}
+                    resetFilters={resetFilters}
                 />}>
                 </Route>
                 <Route path='/' element={<Navigate replace to='/store' />}>
@@ -137,6 +184,5 @@ function App() {
         </div>
     );
 }
-// http://localhost:3000/store?cartPriceTotal=0&cartAmountTotal=0&minPrice=12&maxPrice=1749&minStock=4&maxStock=140&categoryArr=smartphones%2Claptops%2Cfragrances%2Cskincare&brandArr=Apple%2CSamsung%2COPPO%2CHuawei%2CMicrosoft+Surface%2CInfinix%2CHP+Pavilion%2CImpression+of+Acqua+Di+Gio%2CRoyal_Mirage%2CFog+Scent+Xpressio%2CAl+Munakh%2CLord+-+Al-Rehab%2CL%27Oreal+Paris%27%2CHemani+Tea%2CDermive%2CROREC+White+Rice%2CFair+%26+Clear&sort=default&searchParam=default
-// /store/:cartPriceTotal/:cartAmountTotal/:minPrice/:maxPrice/:minStock/:maxStock/:category/:brand/:sort/:searchParam
+
 export default App;
