@@ -247,6 +247,7 @@ const Filters = (props: propsFilt) => {
                 type='text'
                 onChange={(e) => {
                     setSearchParam(e.target.value.toLowerCase());
+                    props.applyFilters(viewParam);
                     props.applySearch(e.target.value.toLowerCase());
                 }}
                 value={searchParam}
