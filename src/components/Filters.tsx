@@ -10,7 +10,6 @@ const Filters = (props: propsFilt) => {
 
     const catArr = props.queryParams.categoryArr.split(',');
     const brArr = props.queryParams.brandArr.split(',');
-
     const [viewParam, setViewParam] = useState({
         minPrice: props.queryParams.minPrice,
         maxPrice: props.queryParams.maxPrice,
@@ -38,6 +37,7 @@ const Filters = (props: propsFilt) => {
         viewParam.minPrice = e.minValue;
         viewParam.maxPrice = e.maxValue;
         props.applyFilters(viewParam);
+        props.applySearch(searchParam);
     };
 
     const rangeHandlerStock = (e: ChangeResult) => {
@@ -45,6 +45,7 @@ const Filters = (props: propsFilt) => {
         viewParam.minStock = e.minValue;
         viewParam.maxStock = e.maxValue;
         props.applyFilters(viewParam);
+        props.applySearch(searchParam);
     };
 
     const categoryFilterHandler = (prod: string) => {
@@ -53,6 +54,8 @@ const Filters = (props: propsFilt) => {
         });
         setViewParam(Object.assign({}, viewParam));
         props.applyFilters(viewParam);
+        props.applySearch(searchParam);
+
     };
 
     const brandFilterHandler = (prod: string) => {
@@ -61,6 +64,7 @@ const Filters = (props: propsFilt) => {
         });
         setViewParam(Object.assign({}, viewParam));
         props.applyFilters(viewParam);
+        props.applySearch(searchParam);
     };
 
     const createCategoryFilter = () => {
@@ -151,6 +155,7 @@ const Filters = (props: propsFilt) => {
                                 viewParam.sort = 'price-ASC';
                                 setViewParam(Object.assign({}, viewParam));
                                 props.applyFilters(viewParam);
+                                props.applySearch(searchParam);
                             }}
                         />
                         ASC price
@@ -166,6 +171,7 @@ const Filters = (props: propsFilt) => {
                                 viewParam.sort = 'price-DESC';
                                 setViewParam(Object.assign({}, viewParam));
                                 props.applyFilters(viewParam);
+                                props.applySearch(searchParam);
                             }}
                         />
                         DESC price
@@ -181,6 +187,7 @@ const Filters = (props: propsFilt) => {
                                 viewParam.sort = 'rating-ASC';
                                 setViewParam(Object.assign({}, viewParam));
                                 props.applyFilters(viewParam);
+                                props.applySearch(searchParam);
                             }}
                         />
                         ASC rating
@@ -196,6 +203,7 @@ const Filters = (props: propsFilt) => {
                                 viewParam.sort = 'rating-DESC';
                                 setViewParam(Object.assign({}, viewParam));
                                 props.applyFilters(viewParam);
+                                props.applySearch(searchParam);
                             }}
                         />
                         DESC rating
@@ -211,6 +219,7 @@ const Filters = (props: propsFilt) => {
                                 viewParam.sort = 'discount-ASC';
                                 setViewParam(Object.assign({}, viewParam));
                                 props.applyFilters(viewParam);
+                                props.applySearch(searchParam);
                             }}
                         />
                         ASC discount
@@ -226,6 +235,7 @@ const Filters = (props: propsFilt) => {
                                 viewParam.sort = 'discount-DESC';
                                 setViewParam(Object.assign({}, viewParam));
                                 props.applyFilters(viewParam);
+                                props.applySearch(searchParam);
                             }}
                         />
                         DESC discount

@@ -63,6 +63,7 @@ function App() {
     const [cartAmountTotal, setCartAmountTotal] = useState(appLib.getCartAmountTotal());
 
     useEffect(() => {
+        console.log('effect')
         // @ts-ignore
         setSearchParams(queryParams);
         const catArr = queryParams.categoryArr.split(',');

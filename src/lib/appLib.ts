@@ -195,11 +195,11 @@ class AppLib {
     }
 
     applySearch(searchParam: string) {
-        let productsFiltred = this.products;
+        let productsFiltred = this.productsView;
         if (searchParam === 'default') {
-            productsFiltred = this.products;
+            productsFiltred = this.productsView;
         } else {
-            productsFiltred = this.products.filter(prod => {
+            productsFiltred = this.productsView.filter(prod => {
                 if (prod.title.toLowerCase().includes(searchParam) ||
                     prod.price.toString().includes(searchParam) ||
                     prod.discountPercentage.toString().includes(searchParam) ||
